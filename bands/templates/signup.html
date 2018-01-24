@@ -24,21 +24,21 @@
         </div>
     {% endif %}
 
-<div id="border1" style="width: 320px;height: 500px;position: absolute;top:0;bottom: 0;left: 0;right: 0;margin: auto;padding:0px 0px 0px 0px">
+<div id="border1" align="center" style="width: 320px;height: 500px;position: absolute;top:0;bottom: 0;left: 0;right: 0;margin: auto;padding:0px 0px 0px 0px">
 
-    <div style="margin-left:30px;margin-top:20px;"><h3>Create account</h3></div>
+    <div style="margin-top:20px;"><h3>Create account</h3></div>
 	<br>
-	<div class="container" style="margin:0px 0px 100px 17px;width:293.5px;">
+	<div class="container" style="margin:0px 0px 100px 0px;width:293.5px;">
 		<form method="POST" enctype="multipart/form-data" action="/bands/checkEmailandPassword/">
 			{% csrf_token %}
             <div class="form-group">
 			<div class="row">
-				<input type="text" name="uname" id="uname" class="form-control col-sm-5" placeholder="Name" style="margin-left:15px;margin-right:5px;" required>
+				<input type="text" name="uname" id="uname" class="form-control col-sm-5" placeholder="Name" style="margin-left:20px;margin-right:5px;" required>
 				<input type="text" name="usurname" id="usurname" class="form-control col-sm-5" placeholder="Surname">
 			</div>
             </div>
 		<div class="form-group">
-			<input type="text" class="form-control" name="uemail" id="uemail" placeholder="Enter Email" style="width:250px;" required>
+			<input type="text" class="form-control" name="uemail" id="uemail" placeholder="Enter Email" style="width:250px;margin-left:0" required>
 		</div>
 		<div class="form-group">
 			<input type="password" class="form-control" name="upassword" id="upassword" placeholder="Enter Password" style="width:250px;" required>

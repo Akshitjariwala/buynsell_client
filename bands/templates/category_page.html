@@ -2,9 +2,183 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Category Page</title>
+    {%load static %}
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/fileinput/css/fileinput.min.css">
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/mystate.js' %}"></script>
+    <script type="text/javascript">window.setTimeout("document.getElementById('alert_div').style.display='none';", 3000);</script>
+    <style>
+        body {
+          background: #f1f1f1;
+          font-family: 'Open Sans', sans-serif;
+          line-height: 1.8;
+        }
+    </style>
 </head>
 <body>
-$END$
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="margin-bottom:10px;border-bottom: solid 1px #ddd;">
+        <a class="navbar-brand" href="/bands/homepage"><span style="margin-left:100px;">BuyNSell</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText" style="margin-left:100px;">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/bands/homepage/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+        </ul>
+        <div>
+          <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/bands/updateuser/">{{first_name}} {{last_name}}<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/bands/logout/">Logout</a>
+          </li>
+        </ul>
+        </div>
+      </div>
+    </nav>
+<div align="center" style="margin-left:100px;">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-md-20 container-nav" style="margin-top:8px;margin-left: 150px">
+                    {% csrf_token %}
+                    <form class="form-inline" method="POST" action="/bands/search_result/">
+                        {% csrf_token %}
+                        <select class="custom-select my-1 mr-sm-2" style="width:150px;" id="listBox" name="listBox" onchange='selct_district(this.value)'>
+                            <option value="SELECT STATE">Whole India</option>
+                        </select>
+                        <select class="custom-select my-1 mr-sm-2" style="width:120px;" id='secondlist' name="secondlist">
+                        </select>
+                        <select class="custom-select my-1 mr-sm-2" id="category_select" name="category_select" onchange="get_subcat_box()" style="width:150px;">
+                            <option value="Category">All Category</option>
+                            {% for cat in category_data %}
+                                <option value="{{cat.cat_name}}">{{cat.cat_name}}</option>
+                            {% endfor %}
+                        </select>
+                        <select class="custom-select my-1 mr-sm-2" id="subcategory_select" name="subcategory_select" style="width:150px;">
+                            <option value="Sub Category">Sub Category</option>
+                        </select>
+                        <input class="form-control" type="search" placeholder="Search ads here" name="search_text" id="search_text" aria-label="Search" style="width:300px;margin-left:5px;margin-right:5px;">
+                        <input type="submit" class="btn btn-primary" value="Search" style="width:100px; margin-left:5px;"/>
+                        <!--<button class="btn" style="margin-left:5px;border: solid 1px #ddd;width:100px;" type="submit">Search</button>-->
+                    </form>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        {% if not productCategoryData %}
+        <div class="alert alert-info" id="alert_div">
+          <strong>Sorry!</strong> No search result found.
+        </div>
+        {% endif %}
+        {% load static %}
+
+        {% for cat in productCategoryData %}
+            <div  id="product_div" class="divtag" data-category="{{cat.product_category}}">
+                <table id="mytable" width="100%" cellspacing="0" cellpadding="15" summary="Ad" style="margin-top:10px;">
+        <tbody>
+        <tr>
+            <td width="164" rowspan="3">
+                <a href="/bands/product_page/?ad_id={{cat.ad_id}}" title="">
+                    <img src={{cat.cover_image}} alt="Product Image" width="180px" height="180px" style="margin-left:25px">
+                </a>
+            </td>
+            <td valign="top">
+                <h3>
+                    <a href="/bands/product_page/?ad_id={{cat.ad_id}}">
+                        <span> {{cat.ad_title}} </span>
+                    </a>
+                </h3>
+                <small>
+                    {{cat.product_description}}
+                    <span></span>
+                </small>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <small>
+                    <span>{{cat.state}} > {{cat.city}}</span>
+                </small>
+            </td>
+        </tr>
+        <tr>
+            <td valign="bottom">
+                <p>
+                    <img height="15" src="https://s1.olx.in/static/olxin/naspersclassifieds-regional/olxsa-atlas-web-olxin/static/img/inr_symbol.png?v=3"/>
+                    <strong>
+                        {{cat.price}}
+                    </strong>
+                </p>
+            </td>
+            <td width="170" valign="bottom">
+                <span></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+        {% endfor %}
+    </div>
+<script>
+    function get_subcat_box()
+    {
+        $('#subcategory_show').show();
+        var category = document.getElementById("category_select");
+        var selected_category = category.options[category.selectedIndex];
+        var subcategory = document.getElementById("subcategory_select");
+        var selected_cat_id;
+        {% for cat in category_data %}
+            if("{{cat.cat_name}}" == selected_category.value)
+            {
+                selected_cat_id = {{cat.cat_id}};
+            }
+        {% endfor %}
+
+        var subcat_name=[];
+        subcat_name[0] = "Select sub-category";
+        {% for subcat in subcategory_data %}
+            if({{subcat.category_id}} == selected_cat_id)
+            {
+                subcat_name.push("{{subcat.subcat_name}}");
+            }
+        {% endfor %}
+        $('#subcategory_select').empty();
+
+        if(selected_category != null)
+        {
+            var y;
+            for(y=0;y<subcat_name.length;y++)
+            {
+                var option=document.createElement("option");
+                    option.text=subcat_name[y];
+                    option.value=subcat_name[y];
+                    option.name=subcat_name[y];
+                    subcategory.appendChild(option);
+            }
+        }
+
+        if(subcategory.options.length==0)
+        {
+              alert("Select a Category for your product.")
+        }
+
+    }
+</script>
 </body>
 </html>

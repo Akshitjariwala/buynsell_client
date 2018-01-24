@@ -27,38 +27,32 @@
     </style>
 </head>
 <body>
+	<nav class="navbar navbar-light bg-faded" style="background-color: 17a2b8;">
+  <a class="navbar-brand" style="color: fff" href="/bands/admin/">BuyNSell-Admin</a>
+</nav>
+	<!--<p>{{title}}
+	<p>{{description}}
+	<p>{{category}}
+	<p>{{ad_subcat}}
+	<p>{{ad_attribute}}
+	<p>{{state}}
+	<p>{{city}}
+	<p>{{attr1}}
+	<p>{{attr2}}
+	<p>{{cover_image}}
+	<p>{{item_photo1}}
+	<p>{{item_photo2}}
+	<p>{{item_photo3}}
+	<p>{{length}} -->
 
-
-<div id="border1" style="width: 320px;height: 500px;position: absolute;top:0;bottom: 0;left: 0;right: 0;margin: auto;padding:0px 0px 0px 0px">
-
-    <div style="margin-left:30px;margin-top:20px;"><h3>Create account</h3></div>
-	<br>
-	<div class="container" style="margin:0px 0px 100px 17px;width:293.5px;">
-		<form method="POST" enctype="multipart/form-data" action="/bands/addUser/">
-			{% csrf_token %}
-            <div class="form-group">
-			<div class="row">
-				<input type="text" name="uname" id="uname" class="form-control col-sm-5" placeholder="Name" style="margin-left:15px;margin-right:5px;">
-				<input type="text" name="usurname" id="usurname" class="form-control col-sm-5" placeholder="Surname">
-			</div>
-            </div>
-		<div class="form-group">
-			<input type="text" class="form-control" name="uemail" id="uemail" placeholder="Enter Email" style="width:250px;">
-		</div>
-		<div class="form-group">
-			<input type="password" class="form-control" name="upassword" id="upassword" placeholder="Enter Password" style="width:250px;">
-		</div>
-		<div class="form-group">
-		<input type="password" class="form-control" name="cpassword" id="cpassword" placeholder="Re-enter Password" style="width:250px;">
-		</div>
-		<div class="form-group">
-		<input type="password" class="form-control" name="uphonenumber" id="uphonenumber" placeholder="Enter Mobile number" style="width:250px;">
-		</div>
-		<input type="submit" value="Create your account" name="register" class="btn btn-primary btn-block"  style="width:250px;margin-top:30px;"/><br>
-		<div style="margin-left:3px;">Already have an account? <a href="/bands/login">Sign in</a></div>
-		<button onclick="myFunction()"> This is a test button </button>
-</form>
-</div>
-</div>
+	{% for attr in attributes %}
+	<p>{{attr}}
+	{% endfor %}
+	{% for id in id %}
+	<p>{{id}}
+		{% endfor %}
+	{% for attr in attri %}
+	<p>{{attr}}
+	{% endfor %}
 </body>
 </html>

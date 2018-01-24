@@ -1,10 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Post Ad</title>
+    {%load static %}
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/fileinput/css/fileinput.min.css">
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/mystate.js' %}"></script>
+    <script type="text/javascript">window.setTimeout("document.getElementById('alert_div').style.display='none';", 3000);</script>
+    <style>
+        .dynamic-textbox
+        {
+             margin-top:10px;
+             height:50px;
+             width:280px;
+        }
+
+        .fade
+        {
+                opacity:1;
+        }
+        .fade:hover
+        {
+                opacity:0.5;
+        }
+        img
+        {
+            width:110px;
+            height:110px;
+        }
+        .inline
+        {
+            display:inline-block;
+            border: 1px solid #ddd;
+        }
+        .inputWrapper {
+            height:110px;
+            width:110px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            /*Using a background color, but you can use a background image to represent a button*/
+            background-color: #DDF;
+            border-radius:5px;
+        }
+        .fileInput {
+            cursor: pointer;
+            height: 100%;
+            position:absolute;
+            top: 0;
+            right: 0;
+            z-index: 99;
+            /*This makes the button huge. If you want a bigger button, increase the font size*/
+            font-size:50px;
+            /*Opacity settings for all browsers*/
+            opacity: 0;
+            -moz-opacity: 0;
+            filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)
+        }
+        .image {
+          opacity: 1;
+          display: block;
+          width: 100%;
+          height: auto;
+          transition: .5s ease;
+          backface-visibility: hidden;
+        }
+        .image:hover{
+          opacity: 0.7;
+        }
+        .container{
+            margin:0 auto; /* this will center the page */
+            width:600px; /*  use your width here */
+        }
+        body{
+          background: #f1f1f1;
+          font-family: 'Open Sans', sans-serif;
+          line-height:1.8;
+        }
+        .button-container {
+          background:white;
+          overflow-y: auto;
+        }
+        .image-center
+        {
+            border-radius:5px;
+            margin-top:2;
+            margin-left:0;
+            margin-bottom:1;
+            margin-right:0;
+            width:10;
+            height:10;
+        }
+        .button {
+          border-style:solid;
+          border-width:1px;
+          border-color:#ddd;
+          width:50px;
+          height:70px;
+          margin-right:3px;
+          margin-bottom:1px;
+          float:left;
+          background: #f1f1f1;
+        }
+        .image-box
+        {
+            width:102;
+            height:92;
+            border-style: solid;
+            border-width:1px;
+            border-color:#ddd;
+        }
+
+        .hide
+        {
+            display:none;
+        }
+
+        btn
+        {
+            cursor:pointer;
+        }
+    </style>
 </head>
 <body>
-$END$
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="margin-bottom:10px;border-bottom: solid 1px #ddd;">
+        <a class="navbar-brand" href="/bands/homepage"><span style="margin-left:100px;">BuyNSell</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText" style="margin-left:100px;">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/bands/homepage">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+        </ul>
+        <div>
+          <ul class="navbar-nav mr-auto">
+
+          <li class="nav-item active">
+            <a class="nav-link" href="/bands/updateuser/">{{first_name}} {{last_name}}<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/bands/logout/">Logout</a>
+          </li>
+        </ul>
+        </div>
+      </div>
+    </nav>
+    {% if Success_msg %}
+        <div class="alert alert-success" id="alert_div">
+            <strong>Success!</strong>{{Success_msg}}
+        </div>
+    {% endif %}
+    <form method="POST" action="/bands/submit_ad/" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="container" align="center" style="margin-top:20px;">
+        <h3>Submit your Ad here</h3>
+        <br>
+            <div class="row" style="width:570px;">
+                <input type="text" name="ad_title" id="ad_title" class="form-control"  placeholder="Title" style="height:50px;width:280px;margin-right:5px;" required>
+                <input type="text" name="ad_price" id="ad_price" class="form-control"  placeholder="Price" style="height:50px;width:280px;margin-left:5px;" required>
+            </div>
+                <textarea name="ad_description" id="ad_description" class="form-control col-lg-12" placeholder="Description" style="margin-top:10px;height:50px;" required></textarea>
+            <div class="row" style="width:570px;">
+                <div>
+                <select class="custom-select" id="category_select" onchange="get_subcat_box()" name="category_select" style="width:280px;height:50px;;margin-top:10px;">
+                        <option value="selected">Select category</option>
+                        {% for category in category_data %}
+                        <option value='{{category.cat_name}}'>{{category.cat_name}}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            <div id="subcategory_show" style="margin-left:10px;">
+                <select class="custom-select" id="subcategory_select" onchange="get_attributes()" name="subcategory_select" style="width:280px;height:50px;;margin-top:10px;">
+                </select>
+            </div>
+        </div>
+
+            <div class="row" style="margin-top:10px;width:570px;">
+                <div style="margin-left:0px;width:280px;text-align:left;">Product Attributes :</div>
+                <div id="product_attributes" style="width:280px;margin-left:10px;"><!-- Textboxes will added dynamically here--></div>
+            </div>
+            <div class="row" style="margin-top:10px;width:570px;">
+            <select class="custom-select" id="listBox" name="listBox" onchange='selct_district(this.value)' style="width:280px;margin-right:5px;height:50px;">
+                            <option value="SELECT STATE">Select state</option>
+            </select>
+            <select class="custom-select" style="height:50px;width:280px;margin-left:5px;" id='secondlist' name="secondlist">
+            </select>
+            </div>
+        <br>
+        <div style="font-size-adjust: 0.5;margin-top:10px;">
+            <table height="110" width="570px">
+                {% load static %}
+                    <tr height="110">
+                        <td valign="top">Upload Photos : </td>
+                        <td>
+                            <div class="inputWrapper image-box inline fade">
+                            <input type='file' class="joint fileInput" name="cover_image" id="cover_image"/>
+                            <img id="cover_image1" src='{% static "upload_icon.png" %}' name="cover_image1" class="joint-img"  style="border-radius:5px;"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="inputWrapper image-box inline fade">
+                            <input type='file' class="joint fileInput" name="item_photo1" id="item_photo1"/>
+                            <img id="item_photo1" src='{% static "upload_icon.png" %}' name="item_photo1" class="joint-img" style="border-radius:5px;"/>
+                            </div>
+                        </td>
+                    <td>
+                        <div class="inputWrapper image-box inline fade">
+                            <input type='file' class="joint fileInput" name="item_photo2" id="item_photo2"/>
+                            <img id="item_photo2" src='{% static "upload_icon.png" %}' name="item_photo2" class="joint-img"  style="border-radius:5px;"/>
+                            </div>
+                    </td>
+                    <td>
+                        <div class="inputWrapper image-box inline fade">
+                            <input type='file' class="joint fileInput" name="item_photo3" id="item_photo3"/>
+                            <img id="item_photo3" src='{% static "upload_icon.png" %}' name="item_photo3" class="joint-img"  style="border-radius:5px;"/>
+                            </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+            <input type="hidden" name="attributes_length"  id="attributes_length">
+            <input type="submit" class="btn btn-primary" value="Post Ad" name="submit_ad_btn" id="submit_ad_btn" class="hello" style="width:570px;margin-top:20px;margin-bottom:100px;">
+    </div>
+    </form>
+<script type="text/javascript">
+
+    function get_subcat_box()
+    {
+        $('#subcategory_show').show();
+        var category = document.getElementById("category_select");
+        var selected_category = category.options[category.selectedIndex];
+        var subcategory = document.getElementById("subcategory_select");
+        var selected_cat_id;
+        {% for cat in category_data %}
+            if("{{cat.cat_name}}" == selected_category.value)
+            {
+                selected_cat_id = {{cat.cat_id}};
+            }
+        {% endfor %}
+
+        var subcat_name=[];
+        subcat_name[0] = "Select sub-category";
+        {% for subcat in subcategory_data %}
+            if({{subcat.category_id}} == selected_cat_id)
+            {
+                subcat_name.push("{{subcat.subcat_name}}");
+            }
+        {% endfor %}
+        $('#subcategory_select').empty();
+
+        if(selected_category != null)
+        {
+            var y;
+            for(y=0;y<subcat_name.length;y++)
+            {
+                var option=document.createElement("option");
+                    option.text=subcat_name[y];
+                    option.value=subcat_name[y];
+                    option.name=subcat_name[y];
+                    subcategory.appendChild(option);
+            }
+        }
+
+        if(subcategory.options.length==0)
+        {
+              alert("Select a Category for your product.")
+        }
+
+    }
+
+    function get_attributes()
+    {
+        $('#product_attributes').empty();
+        var subcategory = document.getElementById("subcategory_select");
+        var subcategory_selected = subcategory.options[subcategory.selectedIndex];
+        var attribute = document.getElementById("product_attributes");
+        var subcat_id;
+        {% for sub_cat in subcategory_data %}
+            if("{{sub_cat.subcat_name}}" == subcategory_selected.value)
+            {
+                subcat_id = {{sub_cat.subcat_id}};
+            }
+        {% endfor %}
+
+        var attributes = [];
+
+        {% for attribute in attributes_data %}
+            if({{attribute.subcategory_id}} == subcat_id)
+            {
+                attributes.push("{{attribute.attribute_name}}");
+            }
+        {% endfor %}
+        var length = attributes.length;
+        $('#attributes_length').val(length);
+        if(subcategory_selected != null)
+        {
+            var y;
+            for(y=0;y<attributes.length;y++)
+            {
+                var div = document.createElement('DIV');
+                div.innerHTML = GetDynamicTextBox(attributes[y],y);
+                attribute.append(div);
+            }
+        }
+
+    }
+
+    function GetDynamicTextBox(value,x) {
+           return '<input type="text" class="form-control dynamic-textbox"  name="'+x+'" id="'+x+'" placeholder="Add '+ value +'"/>';
+            }
+
+    function readURL(input){
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $(input).next('.joint-img').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+        $(".joint").change(function () {
+            readURL(this);
+        });
+</script>
 </body>
 </html>

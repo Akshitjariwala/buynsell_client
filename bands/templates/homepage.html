@@ -9,7 +9,20 @@
     <script src="{% static 'js/jquery-3.2.1.slim.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/mystate.js' %}"></script>
     <style>
+    linkbtn
+    {
+
+    }
+    a
+    {
+        color : black;
+    }
+    Hover:hover
+    {
+        cursor:pointer;
+    }
     button:hover
     {
         background-color:#6495ED;
@@ -46,26 +59,24 @@
     .button-container {
       width:680px;
       background:white;
-      overflow-y: auto;
+      overflow-y:auto;
     }
 
     .image-center
     {
         border-radius:5px;
-        margin-top:15;
-        margin-left:23;
+        margin-top:2;
+        margin-left:0;
         margin-bottom:10;
         margin-right:0;
-        width:100;
-        height:100;
+        width:120;
+        height:120;
     }
-
     .container-nav
     {
        margin:0 auto; /* this will center the page */
        width:1200px; /*  use your width here */
     }
-
     .button {
       border-style: solid;
       border-width:1px;
@@ -77,6 +88,7 @@
       float:left;
       background: #f1f1f1;
     }
+
     .footer
     {
       width:100%;
@@ -95,7 +107,7 @@
       <div class="collapse navbar-collapse" id="navbarText" style="margin-left:100px;">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/bands/homepage/">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">About</a>
@@ -104,50 +116,136 @@
         <div>
           <ul class="navbar-nav mr-auto">
 
-          <li class="nav-item">
-            <a class="nav-link" href="#">My Account<span class="sr-only">(current)</span></a>
+          <li class="nav-item active">
+            <a class="nav-link">{{first_name}} {{last_name}}<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
+            <a class="nav-link" href="/bands/logout/">Logout</a>
           </li>
         </ul>
         </div>
       </div>
     </nav>
-<div align="center">
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-md-10 container-nav" style="margin-top:8px;">
-                <form class="form-inline">
-                    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" style="width:300px;">
-                    <option selected value="all_india">All India</option>
-                    <option value="mumbai">Mumbai</option>
-                    <option value="surat">Surat</option>
-                    <option value="delhi">Delhi</option>
-                  </select>
-              <input class="form-control" type="search" placeholder="Search ads near you" aria-label="Search" style="width:300px;margin-left:5px;margin-right:5px;">
-            <button class="btn" style="margin-left:5px;border: solid 1px #ddd;width:100px;" type="submit">Search</button>
-                <button class="btn" style="margin-left:20px;border: solid 1px #ddd;width:200px;" id="submit_ad" name="submit_ad">Submit Ad</button>
+    <div align="center" style="margin-left:50px;">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-md-20 container-nav" style="margin-top:8px;margin-left: 150px">
+                    {% csrf_token %}
+                    <form class="form-inline" method="POST" action="/bands/search_result/">
+                        {% csrf_token %}
+                        <select class="custom-select my-1 mr-sm-2" style="width:150px;" id="listBox" name="listBox" onchange='selct_district(this.value)'>
+                            <option value="SELECT STATE">Whole India</option>
+                        </select>
+                        <select class="custom-select my-1 mr-sm-2" style="width:120px;" id='secondlist' name="secondlist">
+                        </select>
+                        <select class="custom-select my-1 mr-sm-2" id="category_select" name="category_select" onchange="get_subcat_box()" style="width:150px;">
+                            <option value="Category">All Category</option>
+                            {% for cat in category_data %}
+                                <option value="{{cat.cat_name}}">{{cat.cat_name}}</option>
+                            {% endfor %}
+                        </select>
+                        <select class="custom-select my-1 mr-sm-2" id="subcategory_select" name="subcategory_select" style="width:150px;">
+                            <option value="Sub Category">Sub Category</option>
+                        </select>
+                        <input class="form-control" type="search" placeholder="Search ads here" name="search_text" id="search_text" aria-label="Search" style="width:300px;margin-left:5px;margin-right:5px;">
+                        <input type="submit" class="btn btn-primary" style="width:100px; margin-left:5px;" value="Search">
+                        <a class="btn btn-primary" href="/bands/post_ad/" style="margin-left:5px;border:solid 1px #ddd;width:150px;color:white;" type="submit">Post a free Ad</a>
+                </div>
                 </form>
-        </div>
-            <div class="col-sm-2"></div>
-        </div>
-    </nav>
-</div>
+                <div class="col-sm-2"></div>
+            </div>
+        </nav>
+    </div>
   <div class="container" align="center" style="margin-top:20px;">
     <!-- Python code here to add category from admin side -->
   <div class="button-container" style="background: #f1f1f1;">
       {% load static %}
       {% for category in category_data %}
-        <a href="#" class="button image"><img src='{% static "images/dishapatani2.jpg" %}' class="image-center" alt="Image not Available" ><div class="caption" style="margin-left:35px;">{{ category.cat_name }}</div></a>
+      <div id="cat" class="thumbnail"><div><a href="/bands/category_page/?category={{category.cat_name}}" class="button image" align="center"><img src='{{ category.cat_image }}' class="image-center" alt="Image not Available" ><label id="category_name">{{category.cat_name}}</label></a></div></div>
       {% endfor %}
-
   </div>
+      <input type="hidden" name="cat_name"  id="cat_name">
 </div>
+
 <div class="footer">
     {% load static %}
   <img src='{% static "images/footer.png" %}' style="width:100%;">
 </div>
+<script>
+    var selected_category=null;
+        var selected_subcategory=null;
+        var search_text=null;
+        var selected_state=null;
+        var selected_city=null;
+        {% if request.session.selected_state %}
+            selected_state = "{{ request.session.selected_state }}";
+            // alert(selected_state);
+        {% endif %}
+        {% if request.session.selected_city %}
+            selected_city = "{{ request.session.selected_city }}";
+            // alert(selected_city);
+        {% endif %}
+        {% if request.session.selected_category %}
+            selected_category = "{{ request.session.selected_category }}";
+            // alert(selected_category);
+            $("#category").val(selected_category);
+            getsub_cat();
+        {% endif %}
+        {% if request.session.selected_subcategory %}
+            selected_subcategory = "{{ request.session.selected_subcategory }}";
+            // alert(selected_subcategory);
+            $("#sub_category").val(selected_subcategory);
+        {% endif %}
+        {% if request.session.search_text %}
+            search_text = "{{ request.session.search_text }}";
+            // alert(search_text);
+            $("#search_text").val(search_text);
+        {% endif %}
+    function get_subcat_box()
+    {
+        $('#subcategory_show').show();
+        var category = document.getElementById("category_select");
+        var selected_category = category.options[category.selectedIndex];
+        var subcategory = document.getElementById("subcategory_select");
+        var selected_cat_id;
+        {% for cat in category_data %}
+            if("{{cat.cat_name}}" == selected_category.value)
+            {
+                selected_cat_id = {{cat.cat_id}};
+            }
+        {% endfor %}
+
+        var subcat_name=[];
+        subcat_name[0] = "Select sub-category";
+        {% for subcat in subcategory_data %}
+            if({{subcat.category_id}} == selected_cat_id)
+            {
+                subcat_name.push("{{subcat.subcat_name}}");
+            }
+        {% endfor %}
+        $('#subcategory_select').empty();
+
+        if(selected_category != null)
+        {
+            var y;
+            for(y=0;y<subcat_name.length;y++)
+            {
+                var option=document.createElement("option");
+                    option.text=subcat_name[y];
+                    option.value=subcat_name[y];
+                    option.name=subcat_name[y];
+                    subcategory.appendChild(option);
+            }
+        }
+
+        if(subcategory.options.length==0)
+        {
+              alert("Select a Category for your product.")
+        }
+
+    }
+
+</script>
 </body>
 </html>

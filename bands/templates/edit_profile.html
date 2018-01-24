@@ -1,10 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    {% load static %}
+	<title>Edit Profile</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet">
+	<script src="{% static 'js/jquery-3.2.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.8;
+            }
+    </style>
+    </style>
 </head>
 <body>
-$END$
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="margin-bottom:10px;border-bottom: solid 1px #ddd;">
+         <a class="navbar-brand" href="/bands/admin"><span style="margin-left:100px;">BuyNSell-Admin</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText" style="margin-left:100px;">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+
+          </li>
+        </ul>
+        <div>
+          <ul class="navbar-nav mr-auto">
+
+          <li class="nav-item active">
+            <a class="nav-link" href="/bands/updateadmin/">Edit Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/bands/logout">Logout</a>
+          </li>
+        </ul>
+        </div>
+      </div>
+    </nav>
+    {% if Error %}
+        <div class="alert alert-danger" id="alert_div">
+            <strong>{{Error}}</strong>
+        </div>
+    {% endif %}
+    {% if Success %}
+    	<div class="alert alert-danger" id="adert_div">
+    		<strong>{{Success}}</strong>
+    	</div>
+    {% endif %}
+
+<div id="border1" style="width: 320px;height: 500px;position: absolute;top:0;bottom: 0;left: 0;right: 0;margin: auto;padding:0px 0px 0px 0px">
+
+    <div style="margin-left:30px;margin-top:20px;"><h3>Edit Profile</h3></div>
+	<br>
+	<div class="container" style="margin:0px 0px 100px 17px;width:293.5px;">
+		<form method="POST" enctype="multipart/form-data" action="/bands/updateadmin/">
+			{% csrf_token %}
+            <div class="form-group">
+			<div class="row">
+			{% with admin_data|first as admin %}
+				<!-- {{admin.firstname}} -->
+				<input type="text" name="uname" id="uname" class="form-control col-sm-5" placeholder="Name" value="{{admin.first_name}}" style="margin-left:15px;margin-right:5px;" required>
+				<input type="text" name="usurname" value="{{admin.last_name}}" id="usurname" class="form-control col-sm-5" placeholder="Surname">
+			</div>
+            </div>
+		<div class="form-group">
+			<input type="text" class="form-control" name="uemail" disabled="disabled" value="{{admin.user_email}}" id="uemail" placeholder="Enter Email" style="width:250px;" required>
+		</div>
+		<div class="form-group">
+			<input type="password" class="form-control" name="oldpassword" id="oldpassword" placeholder="Enter Old Password" style="width:250px;" required>
+		</div>
+		<div class="form-group">
+			<input type="password" class="form-control" name="upassword" id="upassword" placeholder="Enter New Password" style="width:250px;" required>
+		</div>
+		<div class="form-group">
+		<input type="password" class="form-control" name="cpassword" id="cpassword" placeholder="Re-enter Password" style="width:250px;" required>
+		</div>
+		<div class="form-group">
+		<input type="text" class="form-control" name="uphonenumber" value="{{admin.user_phone_no}}" id="uphonenumber" placeholder="Enter Mobile number" style="width:250px;">
+		</div>
+		{% endwith %}
+		<input type="submit" value="Edit Profile" name="register" class="btn btn-primary btn-block" class="hello" style="width:250px;margin-top:30px;" required/><br>
+</form>
+</div>
+</div>
 </body>
 </html>
