@@ -14,6 +14,7 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/mystate.js' %}"></script>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -106,41 +107,40 @@
             {% for product in product %}
             <label style="color:rgba(255,255,255,1);font:normal normal normal 25px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;margin-left:50px;margin-top:50px;"><strong><label id="product">{{ product.ad_title }}</label></strong></label>
             <br>
-            <label style="margin-left:50px;margin-top:50px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 18px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">Seller :</span><span style='color:rgba(168,168,167,1);font:normal normal normal 18px/1.4em georgia,palatino,"book antiqua","palatino linotype",serif' > {{ product.user_data.first_name }} {{ product.user_data.last_name }}</span></label>
-            <br><label style="margin-left:50px;margin-top:1px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 18px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">Email  :</span><span style='color:rgba(168,168,167,1);font:normal normal normal 18px/1.4em georgia,palatino,"book antiqua","palatino linotype",serif' ><label id="email_addr">{{ product.user_data.user_email }}</label> </span></label>
-            <br><label style="margin-left:50px;margin-top:1px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 18px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">Mobile No.  :</span><span style='color:rgba(168,168,167,1);font:normal normal normal 18px/1.4em georgia,palatino,"book antiqua","palatino linotype",serif' > {{ product.user_data.user_phone_no }} </span></label>
-            <br><label style="margin-left:50px;margin-top:1px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 18px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">State  :</span><span style='color:rgba(168,168,167,1);font:normal normal normal 18px/1.4em georgia,palatino,"book antiqua","palatino linotype",serif' > {{ product.state }} </span></label>
-            <br><label style="margin-left:50px;margin-top:1px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 18px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">City  :</span><span style='color:rgba(168,168,167,1);font:normal normal normal 18px/1.4em georgia,palatino,"book antiqua","palatino linotype",serif' > {{ product.city }} </span></label>
+            <label style="margin-left:50px;margin-top:50px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 18px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">Seller :</span><span style="color:rgba(168,168,167,1);font-family:'Slabo 70px', serif;font-size:20px;" > {{ product.user_data.first_name }} {{ product.user_data.last_name }}</span></label>
+            <br><label style="margin-left:50px;margin-top:1px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 18px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">Email  :</span><span style="color:rgba(168,168,167,1);font-family:'Slabo 70px', serif;font-size:20px;" ><label id="email_addr">{{ product.user_data.user_email }}</label> </span></label>
+            <br><label style="margin-left:50px;margin-top:1px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 18px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">Mobile No.  :</span><span style="color:rgba(168,168,167,1);font-family:'Slabo 70px', serif;font-size:20px;"> {{ product.user_data.user_phone_no }} </span></label>
+            <br><label style="margin-left:50px;margin-top:1px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 18px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">State  :</span><span style="color:rgba(168,168,167,1);font-family:'Slabo 70px', serif;font-size:20px;" > {{ product.state }} </span></label>
+            <br><label style="margin-left:50px;margin-top:1px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 18px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">City  :</span><span style="color:rgba(168,168,167,1);font-family:'Slabo 70px', serif;font-size:20px;" > {{ product.city }} </span></label>
             <br><label style="margin-left:50px;margin-top:1px;"><span style='color:rgba(168,168,167,1);font:normal normal normal 18px/1.4em georgia,palatino,"book antiqua","palatino linotype",serif' > {{ product.product_description }} </span></label>
-            <br><label style="margin-left:50px;margin-top:1px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 25px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">Price  :</span><span style='color:rgba(168,168,167,1);font:normal normal normal 25px/1.4em georgia,palatino,"book antiqua","palatino linotype",serif' > {{ product.price }} </span></label>
+            <br><label style="margin-left:50px;margin-top:1px;"><span style="color:rgba(255,255,255,1);font:normal normal normal 25px/1.4em avenir-lt-w01_85-heavy1475544,sans-serif;">Price  :</span><span style="color:rgba(168,168,167,1);font-family:'Slabo 70px', serif;font-size:20px;" > {{ product.price }} </span></label>
             {% endfor %}
             <br>
             <div style="margin-left:50px;">
-            <button type="button" class="btn btn-success" onclick="send_email()" return false>Notify Seller</button>
+            <button type="button" class="btn btn-success" style="height:50px;margin-top:10px;width:150px;" onclick="send_email();">Notify Seller</button>
             </div>
             </div>
     </div>
 <script>
-
-    function send_email() {
+    function send_email(){
     var email = document.getElementById('email').textContent
     var first_name = document.getElementById('first_name').textContent
     var last_name = document.getElementById('last_name').textContent
     var phone_no = document.getElementById('phone').textContent
     var user_email = document.getElementById('email_addr').textContent
     var product = document.getElementById('product').textContent;
-    var text = "Greetings from BuyNSell.User "+first_name+" "+last_name+" wants to buy your product "+product+". User details are Email : "+email+" Mobile no. : "+phone_no+";
 
-    if(!email || !first_name || !last_name || !phone_no || !user_email || !product || !text)
+    if(!email || !first_name || !last_name || !phone_no || !user_email || !product)
     {
         alert("Something is missing");
     }
-    else{
-    var link = "mailto:akshit.jariwala18@gmail.com"
-             + "?cc=akshitjariwala96@gmail.com"
-             + "&subject= Product Inquiry."
-             + "&body=This is test email."
-    alert(text);
+    else
+    {
+        var link = "mailto:"+user_email
+                 + "?cc="+email
+                 + "&subject= Product Inquiry."
+                 + "&body=Greetings from BuyNSell.User "+first_name+" "+last_name+" wants to buy your product "+product+".<br>User details are : Email-address : "+email+" Phone no. "+phone_no+".Please send confirmation to "+email+" or contact as soon as possible. ";
+        window.location.href = link;
     }
 }
 </script>
